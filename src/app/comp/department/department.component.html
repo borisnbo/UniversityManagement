@@ -1,0 +1,11 @@
+<section class="needSpace">
+    <div class="example-button-row">
+        
+      <button mat-raised-button color="accent" (click)="OpenPopup()"><mat-icon>add</mat-icon>Add a Department</button>
+
+    </div>
+</section>
+  
+<span *ngIf="render">
+    <app-table [datas]="departments" [columnsHeader]="header"></app-table>
+</span>

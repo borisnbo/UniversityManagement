@@ -1,0 +1,10 @@
+<section class="needSpace">
+    <div class="example-button-row">
+      <button mat-raised-button color="accent" (click)="OpenPopup()"><mat-icon>add</mat-icon>Add a Instructor</button>
+    
+    </div>
+</section>
+  
+<span *ngIf="instructor!==undefined">
+    <app-table [datas]="instructor" [columnsHeader]="header"></app-table>
+</span>
