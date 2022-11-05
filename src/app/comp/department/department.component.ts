@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { DepartmentService } from 'src/app/serv/DepartmentService';
 import { InstructorService } from 'src/app/serv/instructorService';
 import { isEmpty } from 'src/app/serv/_global';
@@ -15,7 +16,6 @@ export class DepartmentComponent implements OnInit {
 
   departments:Array<object> = [];
   instructors: any;
-  render = false;
   header = ['name', 'budget','Administrator'];
   /**
    * Elements that i transfer to the modal manager.
@@ -25,12 +25,15 @@ export class DepartmentComponent implements OnInit {
     budjet: new FormControl(0.0),
     instructorId: new FormControl('')
   }
+  _dataSource: any;
  
   
 ///End of transfer objects
   constructor(private _service:DepartmentService, private _instructorServ:InstructorService, private matdialog: MatDialog) {}
 
   async ngOnInit(): Promise<void> {
+     this._dataSource = new MatTableDataSource();
+     //this.getInstructors();
      await this.getDepartment();
      this.getInstructors();
   }
@@ -43,7 +46,7 @@ export class DepartmentComponent implements OnInit {
     return this.instructors;
   }
   async getDepartment(){
-    this.render = false;
+    
     this._service.getAll().subscribe(_data=>{
       var res :any;
       res = _data;
@@ -51,7 +54,7 @@ export class DepartmentComponent implements OnInit {
           element.Administrator = element.administrator.firstName+' '+element.administrator.lastName;
           this.departments.push(element);
       });
-      this.render = true;
+      this._dataSource.data = this.departments;
     });
   }
   

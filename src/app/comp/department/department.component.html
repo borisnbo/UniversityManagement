@@ -6,6 +6,5 @@
     </div>
 </section>
   
-<span *ngIf="render">
-    <app-table [datas]="departments" [columnsHeader]="header"></app-table>
-</span>
+<app-table [_dataSource]="_dataSource" [columnsHeader]="header"></app-table>
+

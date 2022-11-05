@@ -5,6 +5,4 @@
     </div>
 </section>
   
-<span *ngIf="students!==undefined">
-    <app-table [datas]="students" [columnsHeader]="header"></app-table>
-</span>
+<app-table [_dataSource]="_dataSource" [columnsHeader]="header"></app-table>

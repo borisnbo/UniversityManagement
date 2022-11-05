@@ -16,24 +16,25 @@ export class TableComponent implements AfterViewInit {
 
    @Input() columnsHeader :any;  
 
-   dataSource  = new MatTableDataSource(this.datas);
+ @Input() _dataSource!:MatTableDataSource<any>;
 
   constructor(private _liveAnnouncer: LiveAnnouncer) {
 
   }
   ngOnInit(){
-        this.dataSource = new MatTableDataSource(this.datas);
+       // this.dataSource = new MatTableDataSource(this.datas);
   }
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatTable) table!: MatTable<any>;
 
   ngAfterViewInit() {
     //console.log(this.dataSource);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    this._dataSource.sort = this.sort;
+    this._dataSource.paginator = this.paginator;
   }
-
+  
   /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {

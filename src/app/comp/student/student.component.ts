@@ -5,6 +5,8 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { StudentformComponent } from './studentform/studentform.component';
 import { FormItem, isEmpty } from 'src/app/serv/_global';
+import { MatTableDataSource } from '@angular/material/table';
+import { PopUpService } from 'src/app/serv/_globalPupopServive';
 
 @Component({
   selector: 'app-student',
@@ -14,7 +16,6 @@ import { FormItem, isEmpty } from 'src/app/serv/_global';
 
 export class StudentComponent implements OnInit {
 
-  students: any;
   header = ['lastName', 'firstName'];
   /**
    * Elements that i transfer to the modal manager.
@@ -28,36 +29,28 @@ export class StudentComponent implements OnInit {
     {type:"text", name: this.myFormObject.firstName, displayName:"Enter The firstName", placeholder:"John ...", cols:6},
     {type:"text", name: this.myFormObject.lastName, displayName:"Enter The lastName", placeholder:"Doe ...", cols:6}
    ];
+  _dataSource: any;
   
 ///End of transfer objects
-  constructor(private _studentServ:StudentService, private matdialog: MatDialog) {}
+  constructor(private _studentServ:StudentService, 
+    private _popupService:PopUpService) {}
 
   ngOnInit(): void {
+    this._dataSource = new MatTableDataSource();
      this.getStudents();
   }
   getStudents(){
     this._studentServ.getAll().subscribe(_students=>{
-      this.students = _students;
+      this._dataSource.data = _students;
     });
   }
   
   OpenPopup() {
-    const popup= this.matdialog.open(StudentformComponent,{width:'40%',
-     data:{
-       formObject: this.myFormObject,
-       formItems: this.myFormItem
-     },
-     disableClose:true
-
-   });
-   popup.afterClosed().subscribe(item=>{
-      //console.log(item);
+    var data = this._popupService.OpenPopup(this.myFormObject, this.myFormItem)
+    data.subscribe((item: any)=>{
       if(!isEmpty(item)){
-
-        this.students = undefined;
         this._studentServ.createOrEdit(item).subscribe(res=>{
-          
-            this.getStudents();
+          this.getStudents();
         });
       }
    });

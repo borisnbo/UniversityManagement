@@ -4,7 +4,5 @@
     
     </div>
 </section>
-  
-<span *ngIf="instructor!==undefined">
-    <app-table [datas]="instructor" [columnsHeader]="header"></app-table>
-</span>
+
+<app-table [_dataSource]="_dataSource" [columnsHeader]="header"></app-table>
